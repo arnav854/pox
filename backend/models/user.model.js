@@ -19,6 +19,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
+    role: {
+        type: String,
+        enum: [
+            "recruiter",
+            "applicant",
+        ],
+        default: "applicant",
+    },
   },
   { timestamps: true }
 );
