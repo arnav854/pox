@@ -16,7 +16,7 @@ export const signup = async (req, res) => {
       !firstName ||
       !email ||
       !password ||
-      password.length < 6 
+      password.length < 8 
     ) {
       return res
         .status(400)
