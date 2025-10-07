@@ -1,34 +1,33 @@
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
-import app from "./app.js";
+import connectToDatabase from "./db/database.js"
+// import authRoutes from "./routes/auth.routes.js";
 
-import userRoutes from "./routes/user.routes.js";
-
-// Load environment variables from .env
 dotenv.config();
 
 const PORT = process.env.PORT || 5001;
-const MONGO_URI = process.env.MONGO_DB_URI;
+const app = express();
 
-// Function to connect to MongoDB
-const connectToDatabase = async () => {
-  try {
-    await mongoose.connect(MONGO_URI);
-    console.log("Connected to mongodb");
-  } catch (error) {
-    console.log("Error connecting to Mongodb", error.message);
-  }
-};
 
-// Start server after DB connection
-const startServer = async () => {
-  await connectToDatabase();
-  app.listen(PORT, () => {
-    console.log(`[INFO] Server running on port ${PORT}`); 
-  });
-};
+app.use(cors({
+    origin:  "http://localhost:5173",
+    credentials: true,
+}));
 
-app.use("/api/auth", userRoutes);
+// JSON and URL-encoded data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Start everything
-startServer();
+// parse cookies
+app.use(cookieParser());
+
+// Routes
+// app.use("/api/auth", authRoutes);
+
+
+app.listen(PORT, () => {
+    console.log(`Server is running on ${PORT}`);
+    connectToDatabase();
+});
