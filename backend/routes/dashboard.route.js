@@ -1,14 +1,13 @@
 import express from "express";
-import protectRoute from "../middleware/protectRoute.js";
-import  multer from 'multer'
+import protectRoute from "../middlewares/protectRoute.js";
+import  upload from "../config/multerconfig.js" 
 import { handleJobImageDetails } from "../config/handlefileUploads.config.js";
 
 
 
-const upload = multer()
 const router = express.Router();
 
-router.post("/upload",protectRoute,upload.single('file'), handleJobImageDetails );
+router.post("/upload",upload.single('file'), handleJobImageDetails );
 
 
 

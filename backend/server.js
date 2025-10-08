@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectToDatabase from "./db/database.js"
 import authRoutes from "./routes/auth.routes.js";
+import uploadRoute from "./routes/dashboard.route.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/resume", uploadRoute);
 
 
 app.listen(PORT, () => {

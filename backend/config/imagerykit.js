@@ -1,27 +1,34 @@
-import axios from "axios";
-import FormData from "form-data";
+import ImageKit from "imagekit";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const imagekit = new ImageKit({
+  publicKey: "public_CzsbiVjzRbaNxtuGky/+3Lnh6Ek=",
+  privateKey: "private_DL0qnWdNZNJskdAYHYqc10ttfSE=",
+  urlEndpoint: "https://ik.imagekit.io/yyhk4cahp", 
+});
 
 
-export const uploadFile = async ( req, res ) =>{
-    try {
-        const fileBuffer = req.file.buffer; 
-        const fileName = req.file.originalname;
-        const form = new FormData();
-        form.append("file", fileBuffer.toString("base64"));
-        form.append("fileName", fileName);
-
-        const response = await axios.post(IMAGEKIT_UPLOAD_URL, form, {
-        headers: {
-            ...form.getHeaders(),
-            Authorization: `Basic ${Buffer.from(IMAGEKIT_PRIVATE_KEY + ":").toString("base64")}`,
-        },
-        });
-
-        const fileUrl = response.data.url;
-        return fileUrl
-
-    }catch(err) {
-        console.log (err, "Error in upload file ")
-        return res.status(500).json({msg : "eInternal server error "})
+export const uploadFile = async (req) => {
+  try {
+    if (!req.file) {
+      throw new Error("No file uploaded");
     }
-}
+
+    const base64File = req.file.buffer.toString("base64");
+
+    const response = await imagekit.upload({
+      file: base64File,
+      fileName: req.file.originalname,
+      folder: "/uploads",
+    });
+
+    console.log("✅ Uploaded to ImageKit:", response.url);
+    return response.url; // ✅ return actual file URL
+
+  } catch (error) {
+    console.error("❌ Image upload failed:", error.message);
+    throw new Error(error.message);
+  }
+};
