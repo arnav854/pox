@@ -1,10 +1,15 @@
 import express from "express";
 import protectRoute from "../middleware/protectRoute.js";
-import { getDashBoardPage } from "../controllers/dashboard.controller.js";
+import  multer from 'multer'
+import { handleJobImageDetails } from "../config/handlefileUploads.config.js";
 
+
+
+const upload = multer()
 const router = express.Router();
 
-router.get("/",protectRoute, getDashBoardPage );
+router.post("/upload",protectRoute,upload.single('file'), handleJobImageDetails );
+
 
 
 

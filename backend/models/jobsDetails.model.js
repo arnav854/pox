@@ -1,30 +1,23 @@
 import mongoose from "mongoose";
 
-const jobsDetails = new mongoose.Schema(
+const jobsDetailsSchema = new mongoose.Schema(
   {
-   title : {
-    type : String ,
-    required : true ,
-    minlength : 3
-   },
-   jobDetailImg : {
-    type : String ,
-    reqiured : true 
-   },
-   description : {
-    type : String ,
-    required : true ,
-   },
-   resumefile : {
-    type : String ,
-    required : true 
-   },
-      
+     resume : {
+        resumeImg : {
+          type : String ,
+          required : true ,
+        },
+        score : {
+          type : Number ,
+          default : 0 
+        }
+     }
+
 
   },
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
+const jobDetails = mongoose.model("jobDetails", jobsDetailsSchema);
 
-export default User;
+export default jobDetails;
