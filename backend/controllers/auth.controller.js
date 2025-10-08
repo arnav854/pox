@@ -7,6 +7,7 @@ export const signup = async (req, res) => {
     const {
       firstName,
       lastName,
+      role,
       email,
       password
     } = req.body;
@@ -15,6 +16,7 @@ export const signup = async (req, res) => {
     if (
       !firstName ||
       !email ||
+      !role ||
       !password ||
       password.length < 8 
     ) {
@@ -36,6 +38,7 @@ export const signup = async (req, res) => {
       firstName,
       lastName,
       email,
+      role,
       password: hashedPassword,
     });
 
@@ -48,6 +51,8 @@ export const signup = async (req, res) => {
         _id: newUser._id,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
+        email: newUser.email,
+        role: newUser.role
       });
     } else {
       res.status(400).json({ error: "Invalid User Data" });
@@ -81,6 +86,7 @@ export const login = async (req, res) => {
     res.status(200).json({
       _id: user._id,
       email: user.email,
+      role: user.role,
       token,
       user: {
         firstName: user.firstName,
